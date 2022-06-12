@@ -14,16 +14,16 @@ import entity.Product;
 import service.ProductService;
 
 /**
- * Servlet implementation class MenuServlet
+ * Servlet implementation class SearchServlet
  */
-@WebServlet("/MenuServlet")
-public class MenuServlet extends HttpServlet {
+@WebServlet("/SearchServlet")
+public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MenuServlet() {
+    public SearchServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,10 +33,18 @@ public class MenuServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		String key = (String)session.getAttribute("key");
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("UTF-8");
+		String keyword = request.getParameter("keyword");
+		String order = request.getParameter("order");
+		//String order = request.getParameter("order");
 		ArrayList<Product> list = new ArrayList<>();
-		list = new ProductService().Search(key);
+		list = new ProductService().Search(keyword,order);
+		
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("key", keyword);
+		session.setAttribute("order", order);
 		request.setAttribute("SearchResult", list);
 		request.getRequestDispatcher("menu.jsp").forward(request, response);
 	}
@@ -46,12 +54,7 @@ public class MenuServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		String key = (String)session.getAttribute("key");
-		ArrayList<Product> list = new ArrayList<>();
-		list = new ProductService().Search(key);
-		request.setAttribute("SearchResult", list);
-		request.getRequestDispatcher("menu.jsp").forward(request, response);
+		//doGet(request, response);
 	}
 
 }

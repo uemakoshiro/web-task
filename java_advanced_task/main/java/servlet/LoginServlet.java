@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
@@ -64,11 +64,11 @@ public class LoginServlet extends HttpServlet {
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}else {
 			ArrayList<Product> list = new ArrayList<>();
-			list = new ProductService().Search("");
+			list = new ProductService().Search("","");
 			
 			request.setAttribute("SearchResult",list);
 			session.setAttribute("userInfo",user);
-			request.getRequestDispatcher("MenuServlet").forward(request, response);
+			request.getRequestDispatcher("menu.jsp").forward(request, response);
 		}
 	}
 

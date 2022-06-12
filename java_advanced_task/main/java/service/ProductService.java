@@ -9,17 +9,17 @@ import util.DbUtil;
 
 public class ProductService {
 	
-	public ArrayList<Product> Search(String keyword) {
+	public ArrayList<Product> Search(String keyword,String order) {
 		
 		ArrayList<Product> list = new ArrayList<>();
 		try (Connection conn = DbUtil.getConnection()) {
             ProductDao searchDao = new ProductDao(conn);
             
-            if(keyword.isEmpty())
-            	list = searchDao.SearchAll();
-            else
-            	list = searchDao.Search(keyword);
-            
+            if(keyword.isEmpty()) {
+            	list = searchDao.SearchAll(order);
+            }else {
+            	list = searchDao.Search(keyword,order);
+            }
             return list;
         } catch (Exception e) {
             e.printStackTrace();

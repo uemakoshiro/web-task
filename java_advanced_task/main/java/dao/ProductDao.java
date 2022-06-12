@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import entity.Product;
 
 public class ProductDao {
-	private static final String SEARCH_ALL = "SELECT p.product_id, p.name AS product_name, p.price, c.name category FROM products p JOIN categories c ON p.category_id = c.id ORDER BY product_id";
-	private static final String SEARCH = "SELECT p.product_id, p.name AS product_name, p.price, c.name category FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? OR c.name LIKE ? ORDER BY product_id";
+	private static String SEARCH_ALL = "SELECT p.product_id, p.name AS product_name, p.price, c.name category FROM products p JOIN categories c ON p.category_id = c.id ";
+	private static String SEARCH = "SELECT p.product_id, p.name AS product_name, p.price, c.name category FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? OR c.name LIKE ? ";
 	private static final String SELECT_ID = "SELECT p.product_id, p.name AS product_name, p.price, c.name category, p.description AS description, p.image_path AS image_path, c.id AS category_id FROM products p JOIN categories c ON p.category_id = c.id WHERE product_id = ?";
 	private static final String INSERT = "INSERT INTO products(product_id, category_id, name, price, image_path, description) VALUES(?, ?, ?, ?, ?, ?)";
 	private static final String DELETE = "DELETE FROM products WHERE product_id = ?";
@@ -22,10 +22,15 @@ public class ProductDao {
         this.con = con;
     }
     
-    public ArrayList<Product> Search(String keyword) {
-
+    public ArrayList<Product> Search(String keyword,String order) {
+    	if("product_id".equals(order) || "c.name".equals(order) || "price".equals(order) || "price DESC".equals(order) || "p.created_at".equals(order) || "p.created_at DESC".equals(order)) {
+    		order = "ORDER BY "+order;
+    	}else {
+    		order = "";
+    	}
+    	
     	ArrayList<Product> list = new ArrayList<>();
-        try (PreparedStatement stmt = con.prepareStatement(SEARCH)) {
+        try (PreparedStatement stmt = con.prepareStatement(SEARCH+order)) {
         	stmt.setString(1, "%"+keyword+"%");
         	stmt.setString(2, "%"+keyword+"%");
             ResultSet rs = stmt.executeQuery();
@@ -43,10 +48,14 @@ public class ProductDao {
     }
     
     
-    public ArrayList<Product> SearchAll() {
-
+    public ArrayList<Product> SearchAll(String order) {
+    	if("product_id".equals(order) || "c.name".equals(order) || "price".equals(order) || "price DESC".equals(order) || "p.created_at".equals(order) || "p.created_at DESC".equals(order)) {
+    		order = "ORDER BY "+order;
+    	}else {
+    		order = "";
+    	}System.out.println(order);
     	ArrayList<Product> list = new ArrayList<>();
-        try (PreparedStatement stmt = con.prepareStatement(SEARCH_ALL)) {
+        try (PreparedStatement stmt = con.prepareStatement(SEARCH_ALL+order)) {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {

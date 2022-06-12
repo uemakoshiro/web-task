@@ -14,10 +14,10 @@
   <div id="app">
 
     <div class="header">
-      <h1 class="site_logo"><a href="menu.jsp">商品管理システム</a></h1>
+      <h1 class="site_logo"><a href="MenuServlet">商品管理システム</a></h1>
       <div class="user">
         <p class="user_name">${ userInfo.getName() }さん、こんにちは</p>
-        <form class="logout_form" action="logout.jsp" method="get">
+        <form class="logout_form" action="LogoutServlet" method="get">
           <button class="logout_btn" type="submit">
             <img src="images/ドアアイコン.png">ログアウト</button>
         </form>
@@ -29,14 +29,13 @@
     <div class="btn"><a class="basic_btn regist" href="InsertServlet">新規登録</a></div>
     </c:if>
     <p>${ msg }</p>
-    <form method="get" action="SearchServlet" class="search_container">
+    <form method="get" action="SearchServlet">
+    <div class="search_container">
       <input type="text" size="25" name="keyword" placeholder="キーワード検索">
       <input type="submit" value="&#xf002">
-    </form>
-
-    <table>
-        <div class="caption"><p>検索結果：${ SearchResult.size() }件</p></div>
-        <div class="order">
+    </div>
+    	<div class="caption"><p>検索結果：${ SearchResult.size() }件</p></div>
+      <div class="order">
           <select class="base-text" name="order" id="order">
             <option value="" selected>並び替え</option>
             <option value="product_id">商品ID</option>
@@ -47,6 +46,12 @@
             <option value="p.created_at DESC">登録日：新しい順</option>
           </select>
         </div>
+      
+    </form>
+
+    <table>
+        
+        
       <thead>
         <tr>
           <th>商品ID</th>
